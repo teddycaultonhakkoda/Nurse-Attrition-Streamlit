@@ -11,4 +11,4 @@ streamlit_extras>=0.2.7
 google-cloud-storage>=2.10.0
 altair<5
 langchain
-openai==0.27.8
+openai==0.27.4
