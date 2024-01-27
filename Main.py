@@ -33,7 +33,7 @@ if len(account) > 0 and len(username) > 0 and len(password) > 0 and len(openai_a
             "account": account,
             "user": username,
             "password": password,
-            "role": 'DATA_ENG',
+            "role": 'DATA_SCIENCE',
             "warehouse": 'COMPUTE_WH',
             "database": 'HEALTHCARE',
             "schema": 'NURSE_ATTRITION'
