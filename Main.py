@@ -43,8 +43,8 @@ if len(account) > 0 and len(username) > 0 and len(password) > 0 and len(openai_a
         session = Session.builder.configs(connection_parameters).create()
         session.add_packages("snowflake-snowpark-python", "pandas", "numpy")
         st.write('Connection Successful!')
-    except:
-        st.error('incorrect credentials or account')
+    except Exception as e:
+        st.error(f'incorrect credentials or account {e}')
 
     switch_warehouse = session.sql("use warehouse COMPUTE_WH").collect()
     queried_table = session.sql('SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED')
