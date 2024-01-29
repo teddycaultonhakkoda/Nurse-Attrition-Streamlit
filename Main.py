@@ -33,7 +33,7 @@ if len(account) > 0 and len(username) > 0 and len(password) > 0 and len(openai_a
             "account": account,
             "user": username,
             "password": password,
-            "role": 'DATA_SCIENCE',
+            "role": 'DATA_ENG',
             "warehouse": 'COMPUTE_WH',
             "database": 'HEALTHCARE',
             "schema": 'NURSE_ATTRITION'
@@ -46,7 +46,6 @@ if len(account) > 0 and len(username) > 0 and len(password) > 0 and len(openai_a
     except Exception as e:
         st.error(f'incorrect credentials or account {e}')
 
-    switch_warehouse = session.sql("use warehouse COMPUTE_WH").collect()
     queried_table = session.sql('SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED')
     queried_table = queried_table.to_pandas()
     st.dataframe(queried_table)
