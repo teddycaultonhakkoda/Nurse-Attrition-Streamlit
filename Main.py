@@ -55,19 +55,29 @@ if len(account) > 0 and len(username) > 0 and len(password) > 0 and len(openai_a
     
 
 
-    query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+    # query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
-    # App logic
-    if query_text is 'Enter query here ...':
-        query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
-    if not openai_api_key.startswith('sk-'):
-        st.warning('Please enter your OpenAI API key!', icon='⚠')
-    if openai_api_key.startswith('sk-'):
-        st.header('Output')
-    generate_response(queried_table, query_text)
+    # # App logic
+    # if query_text is 'Enter query here ...':
+    #     query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+    # if not openai_api_key.startswith('sk-'):
+    #     st.warning('Please enter your OpenAI API key!', icon='⚠')
+    # if openai_api_key.startswith('sk-'):
+    #     st.header('Output')
+    # generate_response(queried_table, query_text)
 else:
     st.error('please enter all four required fields')
 
+query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+
+# App logic
+if query_text is 'Enter query here ...':
+    query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+if not openai_api_key.startswith('sk-'):
+    st.warning('Please enter your OpenAI API key!', icon='⚠')
+if openai_api_key.startswith('sk-'):
+    st.header('Output')
+generate_response(queried_table, query_text)
 
 
 
