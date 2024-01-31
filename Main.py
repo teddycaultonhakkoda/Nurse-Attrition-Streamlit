@@ -20,12 +20,15 @@ def generate_response(data_file, input_query):
 
 st.title('Data Conversational Tool')
 
-account = st.text_input('Please enter your Snowflake account')
-username = st.text_input('Please enter your Snowflake username')
-password = st.text_input('Please enter your Snowflake password', type = 'password')
-openai_api_key = st.text_input('OpenAI API Key', type='password')
+# account = st.text_input('Please enter your Snowflake account')
+# username = st.text_input('Please enter your Snowflake username')
+# password = st.text_input('Please enter your Snowflake password', type = 'password')
+# openai_api_key = st.text_input('OpenAI API Key', type='password')
 
-
+account = st.secrets["account"]
+username = st.secrets["user"]
+password = st.secrets["pass"]
+openai_api_key = st.secrets["api"]
 
 if len(account) > 0 and len(username) > 0 and len(password) > 0 and len(openai_api_key) > 0:
     try:
