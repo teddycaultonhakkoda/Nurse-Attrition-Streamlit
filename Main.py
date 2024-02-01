@@ -49,8 +49,8 @@ if len(account) > 0 and len(username) > 0 and len(password) > 0 and len(openai_a
     except Exception as e:
         st.error(f'incorrect credentials or account {e}')
 
-    queried_table = session.sql('SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED').collect()
-    queried_table = pd.Dataframe(queried_table)
+    queried_table = session.sql('SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED')
+    queried_table = queried_table.to_pandas()
     st.dataframe(queried_table)
     
 
