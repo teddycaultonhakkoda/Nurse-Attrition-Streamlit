@@ -1,7 +1,7 @@
-langchain==0.1.5
-langchain_experimental==0.0.50
-pandas==2.0.3
-python-dotenv==1.0.1
-snowflake_connector_python==3.1.1
-snowflake_snowpark_python==1.7.0
-streamlit==1.30.0
+langchain
+langchain_experimental
+pandas
+python-dotenv
+snowflake_connector_python
+snowflake_snowpark_python
+streamlit
