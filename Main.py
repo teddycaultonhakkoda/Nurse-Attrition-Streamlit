@@ -50,7 +50,7 @@ if len(account) > 0 and len(username) > 0 and len(password) > 0 and len(openai_a
         st.error(f'incorrect credentials or account {e}')
 
     queried_table = session.sql('SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED')
-    queried_table = queried_table.to_pandas()
+    # queried_table = queried_table.to_pandas()
     st.dataframe(queried_table)
     
 
