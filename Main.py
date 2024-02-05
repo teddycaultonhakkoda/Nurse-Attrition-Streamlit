@@ -17,25 +17,13 @@ def generate_response(data_file, input_query):
   response = agent.run(input_query)
   return st.success(response)
 
-
-st.title('Data Conversational Tool')
-
-# account = st.text_input('Please enter your Snowflake account')
-# username = st.text_input('Please enter your Snowflake username')
-# password = st.text_input('Please enter your Snowflake password', type = 'password')
-# openai_api_key = st.text_input('OpenAI API Key', type='password')
-
-account = st.secrets["account"]
-username = st.secrets["user"]
-password = st.secrets["pass"]
-openai_api_key = st.secrets["api"]
-
-if len(account) > 0 and len(username) > 0 and len(password) > 0 and len(openai_api_key) > 0:
+@st.cache_data()
+def db_connection():
     try:
         connection_parameters = {
-            "account": account,
-            "user": username,
-            "password": password,
+            "account": st.secrets["account"],
+            "user": st.secrets["user"],
+            "password": st.secrets["pass"],
             "role": 'DATA_SCIENCE',
             "warehouse": 'DS_WAREHOUSE',
             "database": 'HEALTHCARE',
@@ -45,38 +33,30 @@ if len(account) > 0 and len(username) > 0 and len(password) > 0 and len(openai_a
         # Create and Verify Session
         session = Session.builder.configs(connection_parameters).create()
         session.add_packages("snowflake-snowpark-python", "pandas", "numpy")
-        st.write('Connection Successful!')
+
+        queried_table = session.sql('SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED LIMIT 50')
+        queried_table = queried_table.to_pandas()
     except Exception as e:
         st.error(f'incorrect credentials or account {e}')
 
-    queried_table = session.sql('SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED LIMIT 50')
-    queried_table = queried_table.to_pandas()
-    st.dataframe(queried_table)
-    
+    return queried_table
 
 
-    # query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
-    # # App logic
-    # if query_text is 'Enter query here ...':
-    #     query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
-    # if not openai_api_key.startswith('sk-'):
-    #     st.warning('Please enter your OpenAI API key!', icon='⚠')
-    # if openai_api_key.startswith('sk-'):
-    #     st.header('Output')
-    # generate_response(queried_table, query_text)
-else:
-    st.error('please enter all four required fields')
+st.title('Data Conversational Tool')
+
+openai_api_key = st.secrets["api"]
+queried_table = db_connection()
+
+st.dataframe(queried_table)
+
 
 query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
 # App logic
 if query_text is 'Enter query here ...':
     query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
-if not openai_api_key.startswith('sk-'):
-    st.warning('Please enter your OpenAI API key!', icon='⚠')
-if openai_api_key.startswith('sk-'):
-    st.header('Output')
+
 generate_response(queried_table, query_text)
 
 
