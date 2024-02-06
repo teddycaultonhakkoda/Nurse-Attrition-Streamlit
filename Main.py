@@ -34,7 +34,7 @@ def db_connection():
         session = Session.builder.configs(connection_parameters).create()
         session.add_packages("snowflake-snowpark-python", "pandas", "numpy")
 
-        queried_table = session.sql('SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED LIMIT 50')
+        queried_table = session.sql('SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED')
         queried_table = queried_table.to_pandas()
     except Exception as e:
         st.error(f'incorrect credentials or account {e}')
