@@ -74,34 +74,33 @@ with tab2:
     tenure = st.text_input("what is their tenure in days?")
     sex = st.text_input("enter 1 if this person is a male")
     job = st.selectbox('select a role', ('nurse', 'social', 'occupational', 'technologist'))
-    if len(salary) > 0 & len(months_after_college) > 0 and len(tenure) > 0 and len(sex) > 0:
-        if job == 'nurse':
-            nurse = 1
-            occupational = 0
-            social = 0
-            technologist = 0
-        elif job == 'social':
-            nurse = 0
-            occupational = 0
-            social = 1
-            technologist = 0
-        elif job == 'occupational':
-            nurse = 0
-            occupational = 1
-            social = 0
-            technologist = 0
-        elif job == 'technologist':
-            nurse = 0
-            occupational = 0
-            social = 0
-            technologist = 1
-        salary_tenure = salary*tenure
+    if job == 'nurse':
+        nurse = 1
+        occupational = 0
+        social = 0
+        technologist = 0
+    elif job == 'social':
+        nurse = 0
+        occupational = 0
+        social = 1
+        technologist = 0
+    elif job == 'occupational':
+        nurse = 0
+        occupational = 1
+        social = 0
+        technologist = 0
+    elif job == 'technologist':
+        nurse = 0
+        occupational = 0
+        social = 0
+        technologist = 1
+    salary_tenure = salary*tenure
 
-        input = np.array([[salary, months_after_college, tenure, sex, nurse, occupational, social, technologist, salary_tenure]])
-        outcome = model.predict(input)*100
-        print(outcome)
-        average_salary = np.average(queried_table["SALARY"][queried_table["MAPPED_ROLE_CLEAN"] == job])
-        print(average_salary)
+    input = np.array([[salary, months_after_college, tenure, sex, nurse, occupational, social, technologist, salary_tenure]])
+    outcome = model.predict(input)*100
+    print(outcome)
+    average_salary = np.average(queried_table["SALARY"][queried_table["MAPPED_ROLE_CLEAN"] == job])
+    print(average_salary)
 
     st.text(f"According to the model, this employee has a {outcome}% liklihood of churn this year, anything higher than 12.7% should be looked into")
     st.text(f"The average salary for someone with this role is {average_salary}, take this into consideration")
