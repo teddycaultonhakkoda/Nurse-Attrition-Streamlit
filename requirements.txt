@@ -14,6 +14,6 @@ tabulate
 openai
 langchain_community
 langchain_experimental
-pickle
+scikit-learn
 numpy
 
