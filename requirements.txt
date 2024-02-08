@@ -14,6 +14,6 @@ tabulate
 openai
 langchain_community
 langchain_experimental
-scikit-learn
+scikit-learn==1.3.0
 numpy
 
