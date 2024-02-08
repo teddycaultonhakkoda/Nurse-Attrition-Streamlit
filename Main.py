@@ -94,6 +94,10 @@ with tab2:
         occupational = 0
         social = 0
         technologist = 1
+    salary = int(salary)
+    months_after_college = int(months_after_college)
+    tenure = int(tenure)
+    sex = float(sex)
     salary_tenure = salary*tenure
 
     input = np.array([[salary, months_after_college, tenure, sex, nurse, occupational, social, technologist, salary_tenure]])
