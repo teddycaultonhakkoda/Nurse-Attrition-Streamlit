@@ -14,4 +14,6 @@ tabulate
 openai
 langchain_community
 langchain_experimental
+pickle
+numpy
 
