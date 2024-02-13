@@ -62,7 +62,7 @@ with tab1:
     if query_text is 'Enter query here ...':
         query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
-    # generate_response(queried_table, query_text)
+    generate_response(queried_table, query_text)
 
 with tab2:
     with open('modelRFB.pkl', 'rb') as f:
@@ -96,21 +96,21 @@ with tab2:
         social = 0
         technologist = 1
     
-    # if st.button("Submit"):
-    salary = int(salary)
-    months_after_college = int(months_after_college)
-    tenure = int(tenure)
-    sex = float(sex)
-    salary_tenure = salary*tenure
+    if st.button("Submit"):
+        salary = int(salary)
+        months_after_college = int(months_after_college)
+        tenure = int(tenure)
+        sex = float(sex)
+        salary_tenure = salary*tenure
 
-    input = np.array([[salary, months_after_college, tenure, sex, nurse, occupational, social, technologist, salary_tenure]])
-    outcome = model.predict(input)
-    print(outcome)
-    average_salary = np.average(queried_table["SALARY"][queried_table["MAPPED_ROLE_CLEAN"] == job])
-    print(average_salary)
+        input = np.array([[salary, months_after_college, tenure, sex, nurse, occupational, social, technologist, salary_tenure]])
+        outcome = model.predict(input)
+        print(outcome)
+        average_salary = np.average(queried_table["SALARY"][queried_table["MAPPED_ROLE_CLEAN"] == job])
+        print(average_salary)
 
-    st.write(f"According to the model, this employee has a {outcome} liklihood of churn this year, anything higher than 12.7% should be looked into")
-    st.write(f"The average salary for someone with this role is {average_salary}, take this into consideration")
+        st.write(f"According to the model, this employee has a {outcome} liklihood of churn this year, anything higher than 12.7% should be looked into")
+        st.write(f"The average salary for someone with this role is {average_salary}, take this into consideration")
 
 
 
