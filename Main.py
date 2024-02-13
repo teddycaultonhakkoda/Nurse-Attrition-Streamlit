@@ -70,7 +70,7 @@ with tab2:
     
     queried_table = db_connection()
 
-    salary = int(st.text_input("Salary"))
+    salary = st.text_input("Salary")
     months_after_college = st.text_input("How many months after college did they get this job")
     tenure = st.text_input("what is their tenure in days?")
     sex = st.text_input("enter 1 if this person is a male")
@@ -95,20 +95,22 @@ with tab2:
         occupational = 0
         social = 0
         technologist = 1
-    salary = int(salary)
-    months_after_college = int(months_after_college)
-    tenure = int(tenure)
-    sex = float(sex)
-    salary_tenure = salary*tenure
+    
+    if st.button("Submit"):
+        salary = int(salary)
+        months_after_college = int(months_after_college)
+        tenure = int(tenure)
+        sex = float(sex)
+        salary_tenure = salary*tenure
 
-    input = np.array([[salary, months_after_college, tenure, sex, nurse, occupational, social, technologist, salary_tenure]])
-    outcome = model.predict(input)
-    print(outcome)
-    average_salary = np.average(queried_table["SALARY"][queried_table["MAPPED_ROLE_CLEAN"] == job])
-    print(average_salary)
+        input = np.array([[salary, months_after_college, tenure, sex, nurse, occupational, social, technologist, salary_tenure]])
+        outcome = model.predict(input)
+        print(outcome)
+        average_salary = np.average(queried_table["SALARY"][queried_table["MAPPED_ROLE_CLEAN"] == job])
+        print(average_salary)
 
-    st.write(f"According to the model, this employee has a {outcome} liklihood of churn this year, anything higher than 12.7% should be looked into")
-    st.write(f"The average salary for someone with this role is {average_salary}, take this into consideration")
+        st.write(f"According to the model, this employee has a {outcome} liklihood of churn this year, anything higher than 12.7% should be looked into")
+        st.write(f"The average salary for someone with this role is {average_salary}, take this into consideration")
 
 
 
