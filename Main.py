@@ -70,7 +70,7 @@ with tab2:
     
     queried_table = db_connection()
 
-    salary = st.text_input("Salary")
+    salary = int(st.text_input("Salary"))
     months_after_college = st.text_input("How many months after college did they get this job")
     tenure = st.text_input("what is their tenure in days?")
     sex = st.text_input("enter 1 if this person is a male")
