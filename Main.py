@@ -102,12 +102,12 @@ with tab2:
     salary_tenure = salary*tenure
 
     input = np.array([[salary, months_after_college, tenure, sex, nurse, occupational, social, technologist, salary_tenure]])
-    outcome = model.predict(input)*100
+    outcome = model.predict(input)
     print(outcome)
     average_salary = np.average(queried_table["SALARY"][queried_table["MAPPED_ROLE_CLEAN"] == job])
     print(average_salary)
 
-    st.write(f"According to the model, this employee has a {outcome}% liklihood of churn this year, anything higher than 12.7% should be looked into")
+    st.write(f"According to the model, this employee has a {outcome} liklihood of churn this year, anything higher than 12.7% should be looked into")
     st.write(f"The average salary for someone with this role is {average_salary}, take this into consideration")
 
 
