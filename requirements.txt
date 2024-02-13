@@ -15,7 +15,7 @@ openai
 langchain_community
 langchain_experimental
 scikit-learn==1.3.0
-imblearn
+imbalanced-learn
 numpy
 
 
