@@ -62,7 +62,7 @@ with tab1:
     if query_text is 'Enter query here ...':
         query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
-    # generate_response(queried_table, query_text)
+    generate_response(queried_table, query_text)
 
 with tab2:
     with open('modelRFB.pkl', 'rb') as f:
