@@ -14,8 +14,7 @@ tabulate
 openai
 langchain_community
 langchain_experimental
-imbalanced_learn
-imblearn
+imbalanced-learn
 scikit-learn==1.3.0
 numpy
 
