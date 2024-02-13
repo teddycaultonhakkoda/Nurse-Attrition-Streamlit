@@ -7,7 +7,6 @@ from langchain_experimental.agents import create_pandas_dataframe_agent
 from langchain.agents.agent_types import AgentType
 import pickle
 import numpy as np
-import imblearn
 
 
 # Generate LLM response
