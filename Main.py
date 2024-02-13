@@ -64,7 +64,7 @@ with tab1:
     generate_response(queried_table, query_text)
 
 with tab2:
-    with open('model.pkl', 'rb') as f:
+    with open('modelRFB.pkl', 'rb') as f:
         model = pickle.load(f)
     
     queried_table = db_connection()
