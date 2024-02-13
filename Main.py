@@ -106,7 +106,7 @@ with tab2:
         input = np.array([[salary, months_after_college, tenure, sex, nurse, occupational, social, technologist, salary_tenure]])
         outcome = model.predict(input)
         print(outcome)
-        average_salary = np.average(queried_table["SALARY"][(queried_table["MAPPED_ROLE_CLEAN"] == job) & (queried_table["SEX"] == sex)])
+        average_salary = np.average(queried_table["SALARY"][(queried_table["MAPPED_ROLE_CLEAN"] == job) and (queried_table["SEX"] == sex)])
         print(average_salary)
 
         st.write(f"According to the model, it is {outcome} that this employee will churn")
