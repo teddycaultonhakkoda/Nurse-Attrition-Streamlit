@@ -27,7 +27,7 @@ def db_connection():
             "account": st.secrets["account"],
             "user": st.secrets["user"],
             "password": st.secrets["pass"],
-            "role": 'DATA_SCIENCE',
+            "role": 'DATA_ENGINEERING',
             "warehouse": 'DS_WAREHOUSE',
             "database": 'HEALTHCARE',
             "schema": 'NURSE_ATTRITION'
