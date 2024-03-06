@@ -72,38 +72,37 @@ tab1, tab2 = st.tabs(["Churn Forecasting", "Churn Prediction"])
 
 with tab1:
 
-    year = st.selectbox('select a year to forecast churn', ('2022', '2021'))
-    if st.button("Run Forecast"):
+    year = st.selectbox('select a year to forecast churn', ('2022', '2021'), placeholder = '2022')
 
-        queried_table = db_connection()
-        session = session_store()
-        df = session.sql(f"SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED where year(job_enddate) = {year}").to_pandas()
+    queried_table = db_connection()
+    session = session_store()
+    df = session.sql(f"SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED where year(job_enddate) = {year}").to_pandas()
 
-        df["TENURE_DAYS"] = (df["JOB_ENDDATE"] - df["JOB_STARTDATE"]).astype('timedelta64[ns]')
-        df["TENURE_DAYS"][df["TENURE_DAYS"].notnull()] = df["TENURE_DAYS"][df["TENURE_DAYS"].notnull()].dt.days
-        df["TENURE_DAYS"][df["TENURE_DAYS"].isnull()] = df["TENURE_MONTHS"]*30.4167
-        df["TENURE_DAYS"] = df["TENURE_DAYS"].astype(int)
-        df["SALARY_TENURE"] = df["TENURE_DAYS"]*df["SALARY"]
+    df["TENURE_DAYS"] = (df["JOB_ENDDATE"] - df["JOB_STARTDATE"]).astype('timedelta64[ns]')
+    df["TENURE_DAYS"][df["TENURE_DAYS"].notnull()] = df["TENURE_DAYS"][df["TENURE_DAYS"].notnull()].dt.days
+    df["TENURE_DAYS"][df["TENURE_DAYS"].isnull()] = df["TENURE_MONTHS"]*30.4167
+    df["TENURE_DAYS"] = df["TENURE_DAYS"].astype(int)
+    df["SALARY_TENURE"] = df["TENURE_DAYS"]*df["SALARY"]
 
-        # Convert columns into dummy variables
-        dummy_df = pd.get_dummies(df['MAPPED_ROLE_CLEAN'], prefix='MAPPED_ROLE_CLEAN')
-        df = pd.concat([df, dummy_df], axis=1)
-        dummy_df = pd.get_dummies(df['SEX'], prefix='SEX')
-        df = pd.concat([df, dummy_df], axis=1)
+    # Convert columns into dummy variables
+    dummy_df = pd.get_dummies(df['MAPPED_ROLE_CLEAN'], prefix='MAPPED_ROLE_CLEAN')
+    df = pd.concat([df, dummy_df], axis=1)
+    dummy_df = pd.get_dummies(df['SEX'], prefix='SEX')
+    df = pd.concat([df, dummy_df], axis=1)
 
 
-        with open('modelRFB.pkl', 'rb') as f:
-            model = pickle.load(f)
+    with open('modelRFB.pkl', 'rb') as f:
+        model = pickle.load(f)
 
-        predictions = model.predict(df[["SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN_nurse", "MAPPED_ROLE_CLEAN_occupational", "MAPPED_ROLE_CLEAN_social", "MAPPED_ROLE_CLEAN_technologist", "SALARY_TENURE"]])
+    predictions = model.predict(df[["SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN_nurse", "MAPPED_ROLE_CLEAN_occupational", "MAPPED_ROLE_CLEAN_social", "MAPPED_ROLE_CLEAN_technologist", "SALARY_TENURE"]])
 
-        df["PREDICTION"] = predictions
-        st.dataframe(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True])
+    df["PREDICTION"] = predictions
+    st.dataframe(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True])
 
-        openai_api_key = st.secrets["api"]
-        query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+    openai_api_key = st.secrets["api"]
+    query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
-        generate_response(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True], query_text)
+    generate_response(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True], query_text)
 
 with tab2:
     with open('modelRFB.pkl', 'rb') as f:
