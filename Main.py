@@ -109,14 +109,14 @@ with tab1:
         df["PREDICTION"] = predictions
         st.dataframe(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True])
 
-        openai_api_key = st.secrets["api"]
+    openai_api_key = st.secrets["api"]
+    query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+
+    # App logic
+    if query_text is 'Enter query here ...':
         query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
-        # App logic
-        if query_text is 'Enter query here ...':
-            query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
-
-        generate_response(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True], query_text)
+    generate_response(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True], query_text)
 
 with tab2:
     with open('modelRFB.pkl', 'rb') as f:
