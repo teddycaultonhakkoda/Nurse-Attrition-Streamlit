@@ -120,6 +120,7 @@ with tab1:
         df["PREDICTION"] = predictions
         st.dataframe(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True])
 
+        openai_api_key = st.secrets["api"]
         query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
         # App logic
