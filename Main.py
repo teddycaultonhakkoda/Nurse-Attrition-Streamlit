@@ -120,6 +120,14 @@ with tab1:
         df["PREDICTION"] = predictions
         st.dataframe(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True])
 
+        query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+
+        # App logic
+        if query_text is 'Enter query here ...':
+            query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+
+        generate_response(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True], query_text)
+
 with tab2:
     with open('modelRFB.pkl', 'rb') as f:
         model = pickle.load(f)
@@ -167,8 +175,11 @@ with tab2:
         average_salary = np.average(queried_table["SALARY"][queried_table["MAPPED_ROLE_CLEAN"] == job])
         print(average_salary)
 
-        st.write(f"According to the model, it is {outcome} that this employee will churn")
-        st.write(f"The average salary for someone with this role is {average_salary}, take this into consideration")
+        if outcome[0] == True:
+            st.write(f"It is likely that this employee will churn in the next 12 months of employment")
+            st.write(f"The average salary for someone with this role is {average_salary}")
+        else:
+            st.write("This employee will most likely not churn in the next 12 months")
 
 
 with tab3:
