@@ -66,25 +66,14 @@ def session_store():
 
     return session
 
-tab1, tab2, tab3 = st.tabs(["Churn Forecasting", "Churn Prediction", "Virtual Analyst"])
+# tab1, tab2, tab3 = st.tabs(["Churn Forecasting", "Churn Prediction", "Virtual Analyst"])
+
+tab1, tab2 = st.tabs(["Churn Forecasting", "Churn Prediction"])
 
 with tab1:
 
     year = st.selectbox('select a year to forecast churn', ('2022', '2021'))
     if st.button("Run Forecast"):
-        # connection_parameters = {
-        #     "account": st.secrets["account"],
-        #     "user": st.secrets["user"],
-        #     "password": st.secrets["pass"],
-        #     "role": 'DATA_ENGINEER',
-        #     "warehouse": 'COMPUTE_WH',
-        #     "database": 'HEALTHCARE',
-        #     "schema": 'NURSE_ATTRITION'
-        # }
-
-        # # Create and Verify Session
-        # session = Session.builder.configs(connection_parameters).create()
-        # session.add_packages("snowflake-snowpark-python", "pandas", "numpy")
 
         queried_table = db_connection()
         session = session_store()
@@ -183,21 +172,21 @@ with tab2:
             st.write("This employee will most likely not churn in the next 12 months")
 
 
-with tab3:
-    st.title('Data Conversational Tool')
+# with tab3:
+#     st.title('Data Conversational Tool')
 
-    openai_api_key = st.secrets["api"]
-    queried_table = db_connection()
+#     openai_api_key = st.secrets["api"]
+#     queried_table = db_connection()
 
-    st.dataframe(queried_table)
+#     st.dataframe(queried_table)
 
 
-    query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+#     query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
-    # App logic
-    if query_text is 'Enter query here ...':
-        query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+#     # App logic
+#     if query_text is 'Enter query here ...':
+#         query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
-    generate_response(queried_table, query_text)
+#     generate_response(queried_table, query_text)
 
     
