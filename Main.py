@@ -45,24 +45,43 @@ def db_connection():
     return queried_table
 
 
-tab1, tab2 = st.tabs(["Virtual Analyst", "Churn Prediction"])
+tab1, tab2, tab3 = st.tabs(["Churn Forecasting", "Churn Prediction", "Virtual Analyst"])
 
 with tab1:
-    st.title('Data Conversational Tool')
 
-    openai_api_key = st.secrets["api"]
-    queried_table = db_connection()
+    year = st.selectbox('select a year to forecast churn', ('2022', '2021'))
+    if st.button("Run Forecast"):
+        df = session.sql("SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED where year(job_enddate) = 2022").to_pandas()
 
-    st.dataframe(queried_table)
+        df["TENURE_DAYS"] = (df["JOB_ENDDATE"] - df["JOB_STARTDATE"]).astype('timedelta64[ns]')
+        df["TENURE_DAYS"][df["TENURE_DAYS"].notnull()] = df["TENURE_DAYS"][df["TENURE_DAYS"].notnull()].dt.days
+        df["TENURE_DAYS"][df["TENURE_DAYS"].isnull()] = df["TENURE_MONTHS"]*30.4167
+        df["TENURE_DAYS"] = df["TENURE_DAYS"].astype(int)
+        df["SALARY_TENURE"] = df["TENURE_DAYS"]*df["SALARY"]
+
+        # Convert 'role' column into dummy variables
+        dummy_df = pd.get_dummies(df['MAPPED_ROLE_CLEAN'], prefix='MAPPED_ROLE_CLEAN')
+
+        # Concatenate the original DataFrame with the dummy variable DataFrame
+        df = pd.concat([df, dummy_df], axis=1)
+
+        # Convert 'category' column into dummy variables
+        dummy_df = pd.get_dummies(df['SEX'], prefix='SEX')
+
+        # Concatenate the original DataFrame with the dummy variable DataFrame
+        df = pd.concat([df, dummy_df], axis=1)
 
 
-    query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+        print(df.columns)
 
-    # App logic
-    if query_text is 'Enter query here ...':
-        query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
-    generate_response(queried_table, query_text)
+        with open('modelRFB.pkl', 'rb') as f:
+            model = pickle.load(f)
+
+        predictions = model.predict(df[["SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN_nurse", "MAPPED_ROLE_CLEAN_occupational", "MAPPED_ROLE_CLEAN_social", "MAPPED_ROLE_CLEAN_technologist", "SALARY_TENURE"]])
+
+        df["PREDICTION"] = predictions
+        st.dataframe(df[["SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]].head())
 
 with tab2:
     with open('modelRFB.pkl', 'rb') as f:
@@ -114,6 +133,21 @@ with tab2:
         st.write(f"The average salary for someone with this role is {average_salary}, take this into consideration")
 
 
+with tab3:
+    st.title('Data Conversational Tool')
 
+    openai_api_key = st.secrets["api"]
+    queried_table = db_connection()
+
+    st.dataframe(queried_table)
+
+
+    query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+
+    # App logic
+    if query_text is 'Enter query here ...':
+        query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+
+    generate_response(queried_table, query_text)
 
     
