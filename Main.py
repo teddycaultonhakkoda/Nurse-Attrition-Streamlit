@@ -44,7 +44,7 @@ def db_connection():
 
     return queried_table
 
-@st.cache_data()
+@st.cache_resource
 def session_store():
     try:
         connection_parameters = {
