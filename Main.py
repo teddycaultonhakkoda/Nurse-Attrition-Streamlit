@@ -42,7 +42,7 @@ def db_connection():
     except Exception as e:
         st.error(f'incorrect credentials or account {e}')
 
-    return queried_table
+    return queried_table, session
 
 
 tab1, tab2, tab3 = st.tabs(["Churn Forecasting", "Churn Prediction", "Virtual Analyst"])
@@ -51,19 +51,19 @@ with tab1:
 
     year = st.selectbox('select a year to forecast churn', ('2022', '2021'))
     if st.button("Run Forecast"):
-        connection_parameters = {
-            "account": st.secrets["account"],
-            "user": st.secrets["user"],
-            "password": st.secrets["pass"],
-            "role": 'DATA_ENGINEER',
-            "warehouse": 'COMPUTE_WH',
-            "database": 'HEALTHCARE',
-            "schema": 'NURSE_ATTRITION'
-        }
+        # connection_parameters = {
+        #     "account": st.secrets["account"],
+        #     "user": st.secrets["user"],
+        #     "password": st.secrets["pass"],
+        #     "role": 'DATA_ENGINEER',
+        #     "warehouse": 'COMPUTE_WH',
+        #     "database": 'HEALTHCARE',
+        #     "schema": 'NURSE_ATTRITION'
+        # }
 
-        # Create and Verify Session
-        session = Session.builder.configs(connection_parameters).create()
-        session.add_packages("snowflake-snowpark-python", "pandas", "numpy")
+        # # Create and Verify Session
+        # session = Session.builder.configs(connection_parameters).create()
+        # session.add_packages("snowflake-snowpark-python", "pandas", "numpy")
         df = session.sql(f"SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED where year(job_enddate) = {year}").to_pandas()
 
         df["TENURE_DAYS"] = (df["JOB_ENDDATE"] - df["JOB_STARTDATE"]).astype('timedelta64[ns]')
