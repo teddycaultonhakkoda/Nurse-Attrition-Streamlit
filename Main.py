@@ -74,28 +74,30 @@ with tab2:
     tenure = st.text_input("what is their tenure in days?")
     sex = st.text_input("enter 1 if this person is a male")
     job = st.selectbox('select a role', ('nurse', 'social', 'occupational', 'technologist'))
-    if job == 'nurse':
-        nurse = 1
-        occupational = 0
-        social = 0
-        technologist = 0
-    elif job == 'social':
-        nurse = 0
-        occupational = 0
-        social = 1
-        technologist = 0
-    elif job == 'occupational':
-        nurse = 0
-        occupational = 1
-        social = 0
-        technologist = 0
-    elif job == 'technologist':
-        nurse = 0
-        occupational = 0
-        social = 0
-        technologist = 1
+
     
     if st.button("Submit"):
+
+        if job == 'nurse':
+            nurse = 1
+            occupational = 0
+            social = 0
+            technologist = 0
+        elif job == 'social':
+            nurse = 0
+            occupational = 0
+            social = 1
+            technologist = 0
+        elif job == 'occupational':
+            nurse = 0
+            occupational = 1
+            social = 0
+            technologist = 0
+        elif job == 'technologist':
+            nurse = 0
+            occupational = 0
+            social = 0
+            technologist = 1
         salary = int(salary)
         months_after_college = int(months_after_college)
         tenure = int(tenure)
