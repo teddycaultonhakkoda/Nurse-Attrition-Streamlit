@@ -152,7 +152,7 @@ with tab3:
     st.title('Data Conversational Tool')
 
     openai_api_key = st.secrets["api"]
-    queried_table = db_connection()
+    queried_table, session = db_connection()
 
     st.dataframe(queried_table)
 
