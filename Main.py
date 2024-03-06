@@ -125,7 +125,7 @@ with tab2:
         model = pickle.load(f)
     
     queried_table = db_connection()
-    
+
     salary = st.text_input("Salary")
     months_after_college = st.text_input("How many months after college did they get this job")
     tenure = st.text_input("what is their tenure in days?")
@@ -163,7 +163,7 @@ with tab2:
 
         input = np.array([[salary, months_after_college, tenure, sex, nurse, occupational, social, technologist, salary_tenure]])
         outcome = model.predict(input)
-        print(outcome)
+        print(outcome[0])
         average_salary = np.average(queried_table["SALARY"][queried_table["MAPPED_ROLE_CLEAN"] == job])
         print(average_salary)
 
