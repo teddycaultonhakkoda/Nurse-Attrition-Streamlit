@@ -68,7 +68,6 @@ with tab2:
     with open('modelRFB.pkl', 'rb') as f:
         model = pickle.load(f)
     
-    queried_table = db_connection()
 
     salary = st.text_input("Salary")
     months_after_college = st.text_input("How many months after college did they get this job")
