@@ -102,9 +102,9 @@ with tab1:
 
         openai_api_key = st.secrets["api"]
         query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
-    if df is not None:
-        if query_text is 'Enter query here ...':
-            query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
+
+
+        query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
         generate_response(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True], query_text)
 
