@@ -94,7 +94,7 @@ with tab1:
         predictions = model.predict(df[["SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN_nurse", "MAPPED_ROLE_CLEAN_occupational", "MAPPED_ROLE_CLEAN_social", "MAPPED_ROLE_CLEAN_technologist", "SALARY_TENURE"]])
 
         df["PREDICTION"] = predictions
-        st.dataframe(df[["SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True])
+        st.dataframe(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True])
 
 with tab2:
     with open('modelRFB.pkl', 'rb') as f:
