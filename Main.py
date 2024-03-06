@@ -65,7 +65,7 @@ with tab1:
         # session = Session.builder.configs(connection_parameters).create()
         # session.add_packages("snowflake-snowpark-python", "pandas", "numpy")
 
-        queried_table = db_connection()
+        queried_table, session = db_connection()
         df = session.sql(f"SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED where year(job_enddate) = {year}").to_pandas()
 
         df["TENURE_DAYS"] = (df["JOB_ENDDATE"] - df["JOB_STARTDATE"]).astype('timedelta64[ns]')
