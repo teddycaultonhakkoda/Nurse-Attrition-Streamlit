@@ -85,16 +85,10 @@ with tab1:
         df["TENURE_DAYS"] = df["TENURE_DAYS"].astype(int)
         df["SALARY_TENURE"] = df["TENURE_DAYS"]*df["SALARY"]
 
-        # Convert 'role' column into dummy variables
+        # Convert columns into dummy variables
         dummy_df = pd.get_dummies(df['MAPPED_ROLE_CLEAN'], prefix='MAPPED_ROLE_CLEAN')
-
-        # Concatenate the original DataFrame with the dummy variable DataFrame
         df = pd.concat([df, dummy_df], axis=1)
-
-        # Convert 'category' column into dummy variables
         dummy_df = pd.get_dummies(df['SEX'], prefix='SEX')
-
-        # Concatenate the original DataFrame with the dummy variable DataFrame
         df = pd.concat([df, dummy_df], axis=1)
 
 
@@ -109,8 +103,7 @@ with tab1:
         openai_api_key = st.secrets["api"]
         query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
-        # App logic
-        if query_text is 'Enter query here ...':
+        if query_text == 'Enter query here ...':
             query_text = st.text_input('Enter your query:', placeholder = 'Enter query here ...')
 
         generate_response(df[["USER_ID", "SALARY", "MONTHS_AFTER_COLLEGE", "TENURE_DAYS", "SEX_M", "MAPPED_ROLE_CLEAN", "PREDICTION"]][df["PREDICTION"]==True], query_text)
