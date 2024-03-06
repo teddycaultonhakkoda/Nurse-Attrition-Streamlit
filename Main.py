@@ -42,8 +42,29 @@ def db_connection():
     except Exception as e:
         st.error(f'incorrect credentials or account {e}')
 
-    return queried_table, session
+    return queried_table
 
+@st.cache_data()
+def session_store():
+    try:
+        connection_parameters = {
+            "account": st.secrets["account"],
+            "user": st.secrets["user"],
+            "password": st.secrets["pass"],
+            "role": 'DATA_ENGINEER',
+            "warehouse": 'COMPUTE_WH',
+            "database": 'HEALTHCARE',
+            "schema": 'NURSE_ATTRITION'
+        }
+
+        # Create and Verify Session
+        session = Session.builder.configs(connection_parameters).create()
+        session.add_packages("snowflake-snowpark-python", "pandas", "numpy")
+
+    except Exception as e:
+        st.error(f'incorrect credentials or account {e}')
+
+    return session
 
 tab1, tab2, tab3 = st.tabs(["Churn Forecasting", "Churn Prediction", "Virtual Analyst"])
 
@@ -65,7 +86,8 @@ with tab1:
         # session = Session.builder.configs(connection_parameters).create()
         # session.add_packages("snowflake-snowpark-python", "pandas", "numpy")
 
-        queried_table, session = db_connection()
+        queried_table = db_connection()
+        session = session_store()
         df = session.sql(f"SELECT * FROM HEALTHCARE.NURSE_ATTRITION.EMPLOYEES_MERGED where year(job_enddate) = {year}").to_pandas()
 
         df["TENURE_DAYS"] = (df["JOB_ENDDATE"] - df["JOB_STARTDATE"]).astype('timedelta64[ns]')
@@ -152,7 +174,7 @@ with tab3:
     st.title('Data Conversational Tool')
 
     openai_api_key = st.secrets["api"]
-    queried_table, session = db_connection()
+    queried_table = db_connection()
 
     st.dataframe(queried_table)
 
